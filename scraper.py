@@ -47,8 +47,11 @@ def getCourses():
                 links.append(link)
 
         links = list(map(lambda x: x.replace('interno', 'matriz'), links))
-
-        #df = pd.DataFrame({'Name': names, 'Link': links})
+        
+        try:
+           os.mkdir('pages')
+        except:
+            pass
         
         for index, link in enumerate(links):
             driver.get(link)
@@ -95,7 +98,7 @@ def scrapePages():
                         code = th.text
                         tds = row.select("td")
                         discName = tds[0].text.strip()
-                        discs.append([code, i])
+                        discs.append({"Code": code, "Semester": i})
                         deps = getDependencies(tds[3].text)
 
                         disc = {'code': code, 'name': discName, 'dependencies': deps}
